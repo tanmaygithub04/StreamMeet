@@ -14,8 +14,19 @@ import MeetingRoom from '@/components/MeetingRoom';
 const MeetingPage = () => {
   const { id } = useParams();
   const { isLoaded, user } = useUser();
-  const { call, isCallLoading } = useGetCallById(id);
   const [isSetupComplete, setIsSetupComplete] = useState(false);
+
+  // Always call the hook - it can now handle undefined values
+  const { call, isCallLoading } = useGetCallById(id);
+
+  // Handle case where id is undefined
+  if (!id) {
+    return (
+      <p className="text-center text-3xl font-bold text-white">
+        Invalid Meeting ID
+      </p>
+    );
+  }
 
   if (!isLoaded || isCallLoading) return <Loader />;
 
